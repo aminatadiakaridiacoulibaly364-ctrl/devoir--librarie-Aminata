@@ -124,27 +124,31 @@ function sauvegarderEtRafraichir() {
     afficherPanier();
     afficherFavoris();
 }
-
-function estFavori(id) {
-    return favoris.some((item) => item.id === id);
+function estFavori(titreLivre) {
+    // On vérifie si le titre existe déjà dans les favoris
+    return favoris.some((item) => item.titre.trim() === titreLivre.trim());
 }
 
 function toggleFavori(livre) {
-    const index = favoris.findIndex((item) => item.id === livre.id);
+    // On cherche l'index en fonction du titre
+    const index = favoris.findIndex((item) => item.titre.trim() === livre.titre.trim());
+    
     if (index >= 0) {
+        // Si le livre y est déjà, on le retire
         favoris.splice(index, 1);
         return false;
     }
 
+    // Sinon, on l'ajoute
     favoris.push(livre);
     return true;
 }
-
 function actualiserCoeurs() {
     document.querySelectorAll(".btn-heart").forEach((btn) => {
         const carte = btn.closest(".carte-livre");
         if (!carte) return;
-        const estActivé = estFavori(carte.dataset.id);
+        // On passe maintenant le titre à la fonction estFavori
+        const estActivé = estFavori(carte.dataset.titre);
         btn.classList.toggle("favori-actif", estActivé);
         btn.setAttribute("aria-pressed", estActivé ? "true" : "false");
     });
@@ -174,16 +178,22 @@ function attacherFiltresCatalogue() {
     if (recherche) recherche.addEventListener("input", filtrerCatalogue);
     if (filtreGenre) filtreGenre.addEventListener("change", filtrerCatalogue);
 }
-
 function ajouterAuPanier(livre) {
-    // On s'assure que l'ID est traité de la même manière partout (String sans espaces)
-    const idLivre = String(livre.id).trim();
+    // On utilise le titre comme clé unique pour être 100% sûr d'éviter le bug du "0" ou du "undefined"
+    const cleUnique = livre.titre.trim();
+
+    const ligne = panier.find((item) => item.titre.trim() === cleUnique);
     
-    const ligne = panier.find((item) => String(item.id).trim() === idLivre);
     if (ligne) {
         ligne.qty = (ligne.qty || 1) + 1;
     } else {
-        panier.push({ ...livre, id: idLivre, qty: 1 });
+        // On ajoute le produit avec une quantité initiale de 1
+        panier.push({
+            id: livre.id,
+            titre: livre.titre,
+            prix: livre.prix,
+            qty: 1
+        });
     }
 }
 function attacherActionsCatalogue() {
