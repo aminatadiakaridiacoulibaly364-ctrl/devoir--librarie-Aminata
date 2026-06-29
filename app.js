@@ -8,7 +8,10 @@ const favoris = JSON.parse(localStorage.getItem("favoris")) || [];
 function majCompteurs() {
     const compteurPanier = document.querySelector("#compteur-panier");
     const compteurFavoris = document.querySelector("#compteur-favoris");
-    if (compteurPanier) compteurPanier.textContent = panier.length;
+    if (compteurPanier) {
+        const totalQte = panier.reduce((sum, item) => sum + (item.qty || 1), 0);
+        compteurPanier.textContent = totalQte;
+    }
     if (compteurFavoris) compteurFavoris.textContent = favoris.length;
 }
 
@@ -21,20 +24,43 @@ function afficherPanier() {
     let total = 0;
 
     panier.forEach((livre, index) => {
+        const quantite = livre.qty || 1;
         const article = document.createElement("article");
         article.className = "ligne-panier";
         article.innerHTML = `
-            <span>${livre.titre} - ${parseFloat(livre.prix).toFixed(2)} €</span>
-            <button class="btn-retirer" data-index="${index}">Retirer</button>
+            <div class="ligne-panier-info">
+                <span class="titre-panier">${livre.titre}</span>
+                <span>${parseFloat(livre.prix).toFixed(2)} €</span>
+            </div>
+            <div class="quantite-controls">
+                <button class="btn-decrement" data-index="${index}">-</button>
+                <span class="quantite">${quantite}</span>
+                <button class="btn-increment" data-index="${index}">+</button>
+                <button class="btn-retirer" data-index="${index}">Retirer</button>
+            </div>
         `;
         liste.appendChild(article);
-        total += parseFloat(livre.prix);
+        total += parseFloat(livre.prix) * quantite;
     });
 
     totalSpan.textContent = total.toFixed(2);
     document.querySelectorAll(".btn-retirer").forEach((btn) => {
         btn.addEventListener("click", () => {
             panier.splice(parseInt(btn.dataset.index, 10), 1);
+            sauvegarderEtRafraichir();
+        });
+    });
+    document.querySelectorAll(".btn-increment").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const index = parseInt(btn.dataset.index, 10);
+            panier[index].qty = (panier[index].qty || 1) + 1;
+            sauvegarderEtRafraichir();
+        });
+    });
+    document.querySelectorAll(".btn-decrement").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const index = parseInt(btn.dataset.index, 10);
+            panier[index].qty = Math.max(1, (panier[index].qty || 1) - 1);
             sauvegarderEtRafraichir();
         });
     });
@@ -148,6 +174,15 @@ function attacherFiltresCatalogue() {
     if (filtreGenre) filtreGenre.addEventListener("change", filtrerCatalogue);
 }
 
+function ajouterAuPanier(livre) {
+    const ligne = panier.find((item) => item.id === livre.id);
+    if (ligne) {
+        ligne.qty = (ligne.qty || 1) + 1;
+    } else {
+        panier.push({ ...livre, qty: 1 });
+    }
+}
+
 function attacherActionsCatalogue() {
     document.querySelectorAll(".btn-ajouter").forEach((bouton) => {
         bouton.addEventListener("click", () => {
@@ -157,7 +192,7 @@ function attacherActionsCatalogue() {
                 titre: carte.dataset.titre,
                 prix: carte.dataset.prix
             };
-            panier.push(livre);
+            ajouterAuPanier(livre);
             sauvegarderEtRafraichir();
         });
     });
