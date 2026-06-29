@@ -100,13 +100,14 @@ function afficherFavoris() {
         liste.appendChild(article);
     });
 
-    document.querySelectorAll(".btn-ajouter-panier").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const livre = favoris[parseInt(btn.dataset.index, 10)];
-            panier.push({ id: livre.id, titre: livre.titre, prix: livre.prix });
-            sauvegarderEtRafraichir();
-        });
+   document.querySelectorAll(".btn-ajouter-panier").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        const livre = favoris[parseInt(btn.dataset.index, 10)];
+        // Utiliser directement la fonction sécurisée au lieu d'un .push brut
+        ajouterAuPanier({ id: livre.id, titre: livre.titre, prix: livre.prix });
+        sauvegarderEtRafraichir();
     });
+});
 
     document.querySelectorAll(".ligne-favori .btn-retirer").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -175,14 +176,16 @@ function attacherFiltresCatalogue() {
 }
 
 function ajouterAuPanier(livre) {
-    const ligne = panier.find((item) => item.id === livre.id);
+    // On s'assure que l'ID est traité de la même manière partout (String sans espaces)
+    const idLivre = String(livre.id).trim();
+    
+    const ligne = panier.find((item) => String(item.id).trim() === idLivre);
     if (ligne) {
         ligne.qty = (ligne.qty || 1) + 1;
     } else {
-        panier.push({ ...livre, qty: 1 });
+        panier.push({ ...livre, id: idLivre, qty: 1 });
     }
 }
-
 function attacherActionsCatalogue() {
     document.querySelectorAll(".btn-ajouter").forEach((bouton) => {
         bouton.addEventListener("click", () => {
