@@ -51,10 +51,11 @@ $genres = $pdo->query("SELECT DISTINCT genre FROM livres ORDER BY genre")->fetch
             <div class="grille-livres">
                 <?php foreach ($livres as $livre) { ?>
                     <article class="carte-livre"
-                             data-id="<?php echo $livre['id']; ?>"  
+                             data-id="<?php echo $livre['id']; ?>"
                              data-titre="<?= htmlspecialchars($livre['titre']) ?>"
                              data-auteur="<?= htmlspecialchars($livre['auteur']) ?>"
                              data-prix="<?= $livre['prix'] ?>"
+                             data-genre="<?= htmlspecialchars($livre['genre']) ?>"
                              data-image="<?= htmlspecialchars($livre['image']) ?>">
                         <img src="<?= htmlspecialchars($livre['image']) ?>"
                              alt="Couverture de <?= htmlspecialchars($livre['titre']) ?>"

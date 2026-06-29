@@ -68,7 +68,7 @@ function afficherPanier() {
     const etatCommande = document.querySelector('#etat-command');
     if (boutonValider) {
         boutonValider.disabled = panier.length === 0;
-        boutonValider.addEventListener('click', () => {
+        boutonValider.onclick = () => {
             if (panier.length === 0) return;
             if (!confirm('Valider la commande ?')) return;
             panier.length = 0;
@@ -77,7 +77,7 @@ function afficherPanier() {
                 etatCommande.textContent = 'Commande validée ! Merci pour votre achat.';
                 etatCommande.style.color = 'var(--bordeaux)';
             }
-        });
+        };
     }
 }
 
