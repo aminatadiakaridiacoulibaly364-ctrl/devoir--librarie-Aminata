@@ -1,6 +1,6 @@
 <?php
 include "connexion.php";
-requireAdmin();
+// requireAdmin();
 $user = currentUser();
 
 // --- AJOUT & MODIFICATION d'un livre ---
