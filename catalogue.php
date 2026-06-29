@@ -24,8 +24,9 @@ $genres = $pdo->query("SELECT DISTINCT genre FROM livres ORDER BY genre")->fetch
             <a href="favori.php">Favoris (<span id="compteur-favoris">0</span>)</a>
             <?php if ($user): ?>
                 <?php if ($user['role'] === 'admin'): ?>
-                    <a href="gestion.php" class="lien-gestion">Gestion</a>
+                <a href="gestion.php" class="lien-gestion">Gestion</a>
                 <?php endif; ?>
+                
                 <a href="logout.php">Déconnexion (<?= htmlspecialchars($user['username']) ?>)</a>
             <?php else: ?>
                 <a href="login.php">Connexion</a>
