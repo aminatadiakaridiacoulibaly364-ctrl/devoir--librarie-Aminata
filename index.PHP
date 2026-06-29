@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
+  <header class="site-header" >
     <h1>La plume Numérique</h1>
     <nav>
      <a href="index.html"> Acceuil</a>
