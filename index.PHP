@@ -1,3 +1,7 @@
+<?php
+include 'connexion.php';
+$user = currentUser();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,9 +17,17 @@
     <nav>
      <a href="index.PHP">Accueil</a>
      <a href="catalogue.php">Catalogue</a>
-     <a href="panier.html">Panier (<span id="compteur-panier">0</span>)</a>
-     <a href="favori.html">Favoris (<span id="compteur-favoris">0</span>)</a>
-     <a href="gestion.php" class="lien-gestion">Gestion</a>
+     <a href="panier.php">Panier (<span id="compteur-panier">0</span>)</a>
+     <a href="favori.php">Favoris (<span id="compteur-favoris">0</span>)</a>
+     <?php if ($user): ?>
+         <?php if ($user['role'] === 'admin'): ?>
+             <a href="gestion.php" class="lien-gestion">Gestion</a>
+         <?php endif; ?>
+         <a href="logout.php">Déconnexion (<?= htmlspecialchars($user['username']) ?>)</a>
+     <?php else: ?>
+         <a href="login.php">Connexion</a>
+         <a href="register.php">Inscription</a>
+     <?php endif; ?>
     </nav>
   </header>
 

@@ -1,7 +1,10 @@
 <?php
 include "connexion.php";
+requireLogin();
+$user = currentUser();
 // Récupérer tous les livres depuis la base
 $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
+$genres = $pdo->query("SELECT DISTINCT genre FROM livres ORDER BY genre")->fetchAll(PDO::FETCH_COLUMN);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,15 +20,34 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
         <nav>
             <a href="index.php">Accueil</a>
             <a href="catalogue.php">Catalogue</a>
-            <a href="panier.html">Panier (<span id="compteur-panier">0</span>)</a>
-            <a href="favori.html">Favoris (<span id="compteur-favoris">0</span>)</a>
-            <a href="gestion.php" class="lien-gestion">Gestion</a>
+            <a href="panier.php">Panier (<span id="compteur-panier">0</span>)</a>
+            <a href="favori.php">Favoris (<span id="compteur-favoris">0</span>)</a>
+            <?php if ($user): ?>
+                <?php if ($user['role'] === 'admin'): ?>
+                    <a href="gestion.php" class="lien-gestion">Gestion</a>
+                <?php endif; ?>
+                <a href="logout.php">Déconnexion (<?= htmlspecialchars($user['username']) ?>)</a>
+            <?php else: ?>
+                <a href="login.php">Connexion</a>
+                <a href="register.php">Inscription</a>
+            <?php endif; ?>
         </nav>
     </header>
 
     <main>
         <section class="catalogue">
             <h2>Notre catalogue</h2>
+            <div class="filtres-catalogue">
+                <input id="search-titre" type="search" placeholder="Rechercher un titre...">
+                <select id="filter-genre">
+                    <option value="">Tous les genres</option>
+                    <?php foreach ($genres as $genre) {
+                        if (trim($genre) === '') continue;
+                    ?>
+                        <option value="<?= htmlspecialchars($genre) ?>"><?= htmlspecialchars($genre) ?></option>
+                    <?php } ?>
+                </select>
+            </div>
             <div class="grille-livres">
                 <?php foreach ($livres as $livre) { ?>
                     <article class="carte-livre"
@@ -42,8 +64,8 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
                         <span class="genre"><?= htmlspecialchars($livre['genre']) ?></span>
                         <p class="prix"><?= number_format($livre['prix'], 2) ?> €</p>
                         <div class="carte-actions">
-                            <button class="btn-ajouter">Ajouter au panier</button>
-                            <button class="btn-favori">Ajouter aux favoris</button>
+                            <button class="btn-ajouter" type="button">Ajouter au panier</button>
+                            <button class="btn-heart" type="button" aria-label="Ajouter aux favoris">❤</button>
                         </div>
                     </article>
                 <?php } ?>

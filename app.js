@@ -83,12 +83,54 @@ function sauvegarderEtRafraichir() {
     afficherFavoris();
 }
 
-function ajouterAuxFavoris(livre) {
-    const existe = favoris.some((item) => item.id === livre.id);
-    if (!existe) {
-        favoris.push(livre);
-        sauvegarderEtRafraichir();
+function estFavori(id) {
+    return favoris.some((item) => item.id === id);
+}
+
+function toggleFavori(livre) {
+    const index = favoris.findIndex((item) => item.id === livre.id);
+    if (index >= 0) {
+        favoris.splice(index, 1);
+        return false;
     }
+
+    favoris.push(livre);
+    return true;
+}
+
+function actualiserCoeurs() {
+    document.querySelectorAll(".btn-heart").forEach((btn) => {
+        const carte = btn.closest(".carte-livre");
+        if (!carte) return;
+        const estActivé = estFavori(carte.dataset.id);
+        btn.classList.toggle("favori-actif", estActivé);
+        btn.setAttribute("aria-pressed", estActivé ? "true" : "false");
+    });
+}
+
+function filtrerCatalogue() {
+    const recherche = document.querySelector("#search-titre");
+    const filtreGenre = document.querySelector("#filter-genre");
+    const cartes = document.querySelectorAll(".carte-livre");
+    if (!cartes.length) return;
+
+    const texte = recherche?.value.toLowerCase().trim() || "";
+    const genre = filtreGenre?.value.toLowerCase() || "";
+
+    cartes.forEach((carte) => {
+        const titre = carte.dataset.titre.toLowerCase();
+        const carteGenre = (carte.dataset.genre || "").toLowerCase();
+        const afficheTitre = !texte || titre.includes(texte);
+        const afficheGenre = !genre || carteGenre === genre;
+        carte.style.display = afficheTitre && afficheGenre ? "" : "none";
+    });
+}
+
+function attacherFiltresCatalogue() {
+    const recherche = document.querySelector("#search-titre");
+    const filtreGenre = document.querySelector("#filter-genre");
+    if (recherche) recherche.addEventListener("input", filtrerCatalogue);
+    if (filtreGenre) filtreGenre.addEventListener("change", filtrerCatalogue);
 }
 
 function attacherActionsCatalogue() {
@@ -105,7 +147,7 @@ function attacherActionsCatalogue() {
         });
     });
 
-    document.querySelectorAll(".btn-favori").forEach((bouton) => {
+    document.querySelectorAll(".btn-heart").forEach((bouton) => {
         bouton.addEventListener("click", () => {
             const carte = bouton.closest(".carte-livre");
             const livre = {
@@ -115,11 +157,15 @@ function attacherActionsCatalogue() {
                 prix: carte.dataset.prix,
                 image: carte.dataset.image
             };
-            ajouterAuxFavoris(livre);
+            const ajouté = toggleFavori(livre);
+            bouton.classList.toggle("favori-actif", ajouté);
+            sauvegarderEtRafraichir();
         });
     });
 }
 
 majCompteurs();
 attacherActionsCatalogue();
+attacherFiltresCatalogue();
+actualiserCoeurs();
 sauvegarderEtRafraichir();
