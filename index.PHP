@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La plume Numérique</title>
-    <link rel="stylesheet" href="@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap')">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header" >
     <h1>La plume Numérique</h1>
     <nav>
-     <a href="index.html"> Acceuil</a>
-     <a href="catalogue.php"> Cathalogue</a>
-     <a href="panier.html"> panier(<span id="compteur-panier">0</span>) </a>
-     <a href="favori.html">favori</a>
-     <a href="gestion.php"class="lien-gestion" ><button>Gestion</button></a>
+     <a href="index.PHP">Accueil</a>
+     <a href="catalogue.php">Catalogue</a>
+     <a href="panier.html">Panier (<span id="compteur-panier">0</span>)</a>
+     <a href="favori.html">Favoris (<span id="compteur-favoris">0</span>)</a>
+     <a href="gestion.php" class="lien-gestion"><button>Gestion</button></a>
     </nav>
   </header>
 

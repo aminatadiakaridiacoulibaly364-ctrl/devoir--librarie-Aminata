@@ -9,7 +9,7 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Plume Numérique — Catalogue</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="site-header">
@@ -17,7 +17,8 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
         <nav>
             <a href="index.php">Accueil</a>
             <a href="catalogue.php">Catalogue</a>
-            <a href="#panier">Panier (<span id="compteur-panier">0</span>)</a>
+            <a href="panier.html">Panier (<span id="compteur-panier">0</span>)</a>
+            <a href="favori.html">Favoris (<span id="compteur-favoris">0</span>)</a>
             <a href="gestion.php" class="lien-gestion">Gestion</a>
         </nav>
     </header>
@@ -30,7 +31,9 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
                     <article class="carte-livre"
                              data-id="<?= $livre['id'] ?>"
                              data-titre="<?= htmlspecialchars($livre['titre']) ?>"
-                             data-prix="<?= $livre['prix'] ?>">
+                             data-auteur="<?= htmlspecialchars($livre['auteur']) ?>"
+                             data-prix="<?= $livre['prix'] ?>"
+                             data-image="<?= htmlspecialchars($livre['image']) ?>">
                         <img src="<?= htmlspecialchars($livre['image']) ?>"
                              alt="Couverture de <?= htmlspecialchars($livre['titre']) ?>"
                              class="couverture">
@@ -38,7 +41,10 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
                         <p class="auteur"><?= htmlspecialchars($livre['auteur']) ?></p>
                         <span class="genre"><?= htmlspecialchars($livre['genre']) ?></span>
                         <p class="prix"><?= number_format($livre['prix'], 2) ?> €</p>
-                        <button class="btn-ajouter">Ajouter au panier</button>
+                        <div class="carte-actions">
+                            <button class="btn-ajouter">Ajouter au panier</button>
+                            <button class="btn-favori">Ajouter aux favoris</button>
+                        </div>
                     </article>
                 <?php } ?>
             </div>
@@ -55,6 +61,6 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
         <p>La Plume Numérique — Librairie en ligne — 2026</p>
     </footer>
 
-    <script src="js/panier.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

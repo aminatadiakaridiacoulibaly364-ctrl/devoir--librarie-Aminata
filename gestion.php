@@ -28,7 +28,7 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Plume Numérique — Gestion</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="site-header">
@@ -36,6 +36,8 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
         <nav>
             <a href="index.php">Accueil</a>
             <a href="catalogue.php">Catalogue</a>
+            <a href="panier.html">Panier (<span id="compteur-panier">0</span>)</a>
+            <a href="favori.html">Favoris (<span id="compteur-favoris">0</span>)</a>
             <a href="gestion.php" class="lien-gestion">Gestion</a>
         </nav>
     </header>
@@ -80,5 +82,6 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
     <footer class="site-footer">
         <p>La Plume Numérique — Espace de gestion</p>
     </footer>
+    <script src="app.js"></script>
 </body>
 </html>

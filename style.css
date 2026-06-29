@@ -116,13 +116,38 @@ h1, h2, h3 {
 .carte-livre .btn-ajouter { margin-top: auto; }
 
 /* Panier */
-.panier {
+.panier, .favoris {
     background: var(--blanc-casse);
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
-.panier .total { font-size: 1.3rem; font-weight: bold; margin-top: 1rem; color: var(--bordeaux); }
+.panier .total, .favoris .info-favoris { font-size: 1.3rem; font-weight: bold; margin-top: 1rem; color: var(--bordeaux); }
+.ligne-panier, .ligne-favori {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+.ligne-panier:last-child, .ligne-favori:last-child { border-bottom: none; }
+.btn-retirer, .btn-ajouter-panier, .btn-favori {
+    background: var(--dore);
+    color: var(--anthracite);
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+}
+.btn-retirer:hover, .btn-ajouter-panier:hover, .btn-favori:hover { background: var(--bordeaux); color: white; }
+.carte-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
 /* Gestion */
 .formulaire {
