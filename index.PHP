@@ -15,7 +15,7 @@
      <a href="catalogue.php">Catalogue</a>
      <a href="panier.html">Panier (<span id="compteur-panier">0</span>)</a>
      <a href="favori.html">Favoris (<span id="compteur-favoris">0</span>)</a>
-     <a href="gestion.php" class="lien-gestion"><button>Gestion</button></a>
+     <a href="gestion.php" class="lien-gestion">Gestion</a>
     </nav>
   </header>
 

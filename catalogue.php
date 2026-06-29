@@ -50,11 +50,11 @@ $livres = $pdo->query("SELECT * FROM livres")->fetchAll();
             </div>
         </section>
 
-        <section id="panier" class="panier">
+        <!-- <section id="panier" class="panier">
             <h2>Mon panier</h2>
             <div id="liste-panier"></div>
             <p class="total">Total : <span id="total-panier">0.00</span> €</p>
-        </section>
+        </section> -->
     </main>
 
     <footer class="site-footer">
