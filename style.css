@@ -160,6 +160,21 @@ h1, h2, h3 {
     font-weight: 700;
 }
 .btn-retirer:hover, .btn-ajouter-panier:hover { background: var(--bordeaux); color: white; }
+.btn-valider {
+    display: inline-block;
+    background: var(--bordeaux);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+.btn-valider:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .btn-heart {
     background: none;
     border: none;

@@ -38,6 +38,21 @@ function afficherPanier() {
             sauvegarderEtRafraichir();
         });
     });
+    const boutonValider = document.querySelector('#btn-valider');
+    const etatCommande = document.querySelector('#etat-command');
+    if (boutonValider) {
+        boutonValider.disabled = panier.length === 0;
+        boutonValider.addEventListener('click', () => {
+            if (panier.length === 0) return;
+            if (!confirm('Valider la commande ?')) return;
+            panier.length = 0;
+            sauvegarderEtRafraichir();
+            if (etatCommande) {
+                etatCommande.textContent = 'Commande validée ! Merci pour votre achat.';
+                etatCommande.style.color = 'var(--bordeaux)';
+            }
+        });
+    }
 }
 
 function afficherFavoris() {

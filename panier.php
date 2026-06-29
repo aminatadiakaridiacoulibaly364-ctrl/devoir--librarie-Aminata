@@ -33,6 +33,8 @@ $user = currentUser();
             <h2>Mon panier</h2>
             <div id="liste-panier"></div>
             <p class="total">Total : <span id="total-panier">0.00</span> €</p>
+            <button id="btn-valider" class="btn-valider">Valider la commande</button>
+            <p id="etat-command" class="etat-command"></p>
         </section>
     </main>
 
